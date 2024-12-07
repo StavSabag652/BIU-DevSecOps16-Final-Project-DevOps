@@ -1,0 +1,87 @@
+pipeline {
+    agent any
+    environment{
+        REPO='https://github.com/StavSabag652' 
+        BRANCH='master'
+// Not final yet, still working on that
+        APP='not final yet'
+    }
+    stages{
+        stage('verfication'){
+            parallel{
+            stage("verfiy aws"){
+                steps{
+                    sh 'aws --version'
+                }
+            }
+            stage("verfiy docker"){
+                steps{
+                    sh 'docker --version'
+                }
+            }
+            stage("verfiy python"){
+                steps{
+                    sh 'python3 --version'
+                }
+            }
+            }
+        }
+        stage('test aws connectivity'){
+            steps{
+                withAWS(credentials:'jenkins'){
+                    sh 'aws sts get-caller-identity'
+                }
+            }
+        }
+        stage('clone the application'){
+            steps{
+                sh 'git clone $REPO/$APP'
+            }
+        }
+        stage('install requirements'){
+            steps {
+               sh 'pip3 install flask --break-system-packages'
+            }
+        }
+        stage('build'){
+            steps{
+                sh 'python3 $APP/app.py &'
+            }
+
+        }
+        stage('test'){
+            // agent{ docker: "ubuntu" }
+            parallel{
+                stage('unit test'){
+                    steps{
+                        sh 'sleep 3'
+                        sh 'echo pass'
+                    }
+                }
+                stage('e2e test'){
+                    steps{
+                        sh 'sleep 4'
+                        sh 'echo pass'
+                    }
+                }
+
+            }
+        }
+        stage('build docker image'){
+            steps{
+                sh 'docker build -t flasko:V$BUILD_NUMBER $APP'
+            }
+       }
+       stage('verify image creation'){
+            steps{
+                sh 'docker images'
+            }
+       }
+    }
+    post{
+        always{
+            sh 'rm -fr $APP'
+        }
+    }
+   
+}
