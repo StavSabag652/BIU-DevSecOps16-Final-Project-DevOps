@@ -1,0 +1,3 @@
+# Ignore all .key and .key.pub files
+*.key
+*.key.pub
