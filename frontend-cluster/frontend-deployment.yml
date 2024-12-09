@@ -1,51 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: smart-home-deployment
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: smart-home
-  template:
-    metadata:
-      labels:
-        app: smart-home
-    spec:
-      containers:
-      - name: nginx
-        image: nginx
-        ports:
-        - containerPort: 80
-
----
-
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  name: smart-home-replicaset
+  name: smart-home-frontend-deployment
+  labels:
+    app: frontend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: smart-home
+      app: smart-home-frontend
   template:
     metadata:
       labels:
-        app: smart-home
+        app: smart-home-frontend
     spec:
       containers:
       - name: nginx
-        image: nginx
+        image: nginx:latest
         ports:
         - containerPort: 80
-
+        resources:
+          requests:
+            memory: "128Mi" # Allocate 128 MiB of memory
+            cpu: "250m"     # Allocate 250 millicores of CPU
+          limits:
+            memory: "256Mi" # Limit to 256 MiB of memory
+            cpu: "500m"     # Limit to 500 millicores of CPU
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: smart-home-service
+  name: smart-home-NodePort-service
 spec:
   selector:
     app: smart-home
