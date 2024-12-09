@@ -34,7 +34,7 @@ metadata:
   name: smart-home-nodeport-service
 spec:
   selector:
-    app: smart-home
+    app: smart-home-frontend
   ports:
     - protocol: TCP
       port: 80
