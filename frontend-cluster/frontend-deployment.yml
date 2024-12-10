@@ -5,7 +5,7 @@ metadata:
   labels:
     app: frontend
 spec:
-  replicas: 2
+  replicas: 2 # number of actual pods
   selector:
     matchLabels:
       app: smart-home-frontend

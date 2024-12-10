@@ -15,4 +15,4 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 50 # If CPU utilization > 50% then increase pod count to 2 
+        averageUtilization: 50 # If CPU utilization > 50% then increase pod count to 2
