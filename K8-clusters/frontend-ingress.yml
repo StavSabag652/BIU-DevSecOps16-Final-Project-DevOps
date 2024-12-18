@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smart-home-ingress
+  namespace: smart-home-app
+spec:
+  rules:
+  - host: "smart-home.local"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: smart-home-1-service
+            port:
+              number: 80
