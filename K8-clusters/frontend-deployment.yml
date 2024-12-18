@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smart-home-frontend-deployment
+  namespace: smart-home-app
+  labels:
+    app: smart-home-frontend
+spec:
+  replicas: 2 # number of actual pods
+  selector:
+    matchLabels:
+      app: smart-home-frontend
+  template:
+    metadata:
+      labels:
+        app: smart-home-frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi" # Allocate 128 MiB of memory
+            cpu: "250m"     # Allocate 250 millicores of CPU
+          limits:
+            memory: "256Mi" # Limit to 256 MiB of memory
+            cpu: "500m"     # Limit to 500 millicores of CPU
