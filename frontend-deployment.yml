@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: smart-home-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smart-home-frontend-deployment
+  namespace: smart-home-app
+  labels:
+    app: smart-home-frontend
+spec:
+  replicas: 2 # number of actual pods
+  selector:
+    matchLabels:
+      app: smart-home-frontend
+  template:
+    metadata:
+      labels:
+        app: smart-home-frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi" # Allocate 128 MiB of memory
+            cpu: "250m"     # Allocate 250 millicores of CPU
+          limits:
+            memory: "256Mi" # Limit to 256 MiB of memory
+            cpu: "500m"     # Limit to 500 millicores of CPU
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: smart-home-nodeport-service
+  namespace: smart-home-app
+spec:
+  selector:
+    app: smart-home-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30001
+  type: NodePort
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smart-home-ingress
+  namespace: smart-home-app
+spec:
+  rules:
+  - host: "smart-home.local"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: smart-home-1-service
+            port:
+              number: 80
