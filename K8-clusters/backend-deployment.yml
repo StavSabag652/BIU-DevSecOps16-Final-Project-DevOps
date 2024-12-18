@@ -16,15 +16,10 @@ spec:
         app: smart-home-backend
     spec:
       containers:
-      - name: flask-app
-        image: python:3.9-slim
-        command: ["sh", "-c"]
-        args:
-          - pip install Flask && 
-            echo "from flask import Flask, jsonify; app = Flask(__name__); @app.route('/') def home(): return jsonify({'message': 'Smart Home Backend'}); app.run(host='0.0.0.0', port=5000)" > app.py && 
-            python app.py
+      - name: nginx
+        image: nginx:latest
         ports:
-        - containerPort: 5000
+        - containerPort: 80
         resources:
           requests:
             memory: "128Mi" # Allocate 128 MiB of memory
@@ -32,40 +27,15 @@ spec:
           limits:
             memory: "256Mi" # Limit to 256 MiB of memory
             cpu: "500m"     # Limit to 500 millicores of CPU
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: smart-home-nodeport-service
-  namespace: smart-home-app
-spec:
-  selector:
-    app: smart-home-backend
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000
-      nodePort: 30001
-  type: NodePort
-
----
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: smart-home-ingress
-  namespace: smart-home-app
-spec:
-  rules:
-  - host: "smart-home.local"
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: smart-home-nodeport-service
-            port:
-              number: 80
+      # - name: flask-app
+      #   image: python:3.9-slim
+      #   command: ["python3", "--version"]
+      #   ports:
+      #   - containerPort: 5000
+      #   resources:
+      #     requests:
+      #       memory: "128Mi" # Allocate 128 MiB of memory
+      #       cpu: "250m"     # Allocate 250 millicores of CPU
+      #     limits:
+      #       memory: "256Mi" # Limit to 256 MiB of memory
+      #       cpu: "500m"     # Limit to 500 millicores of CPU
