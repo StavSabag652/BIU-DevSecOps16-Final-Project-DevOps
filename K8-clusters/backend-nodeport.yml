@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: smart-home-backend-nodeport
+  namespace: smart-home-app
+spec:
+  selector:
+    app: smart-home-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30002
+  type: NodePort
