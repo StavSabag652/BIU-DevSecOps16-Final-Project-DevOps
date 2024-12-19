@@ -2,6 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: smart-home-backend-hpa
+  namespace: smart-home-app
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
