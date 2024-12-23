@@ -32,10 +32,3 @@ spec:
       #   command: ["python3", "--version"]
       #   ports:
       #   - containerPort: 5000
-      #   resources:
-      #     requests:
-      #       memory: "128Mi" # Allocate 128 MiB of memory
-      #       cpu: "250m"     # Allocate 250 millicores of CPU
-      #     limits:
-      #       memory: "256Mi" # Limit to 256 MiB of memory
-      #       cpu: "500m"     # Limit to 500 millicores of CPU
