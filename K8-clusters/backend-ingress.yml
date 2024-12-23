@@ -12,6 +12,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: smart-home-nodeport-service
+            name: smart-home-
             port:
               number: 80
