@@ -1,3 +1,12 @@
 # Ignore all .key and .key.pub files
 *.key
 *.key.pub
+/.terraform/*
+*.tfstate*
+*.tfstate.backup*
+*.tfvars*
+*.tfvars.backup*
+*.tfvars.json*
+*.hcl*
+*.hcl.json*
+
