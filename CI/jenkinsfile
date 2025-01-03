@@ -35,6 +35,7 @@ pipeline {
     }
     post {
         always {
+            echo "pipeline finished"
             // Add Post cleanup stage here
             //cleanWs()
         }
