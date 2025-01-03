@@ -19,8 +19,8 @@ variable "cidr" {
 }
 
 variable "SmartHomeKeypair" {
-  default = "key-0f2d0e99f479ff3b2"
-  type        = string
+    type = string
+    default = "SmartHomeKeypair"
 }
 
 variable "vpc_id" {
