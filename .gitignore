@@ -3,7 +3,7 @@
 *.key.pub
 
 # Ignore all TF infrastructure
-.terraform/*
+*.terraform
 *.tfstate*
 *.tfstate.backup*
 *.tfvars*
