@@ -2,3 +2,13 @@
 *.key
 *.key.pub
 *.ppk
+
+# Ignore all TF infrastructure
+*.terraform
+*.tfstate*
+*.tfstate.backup*
+*.tfvars*
+*.tfvars.backup*
+*.tfvars.json*
+*.hcl*
+*.hcl.json*
