@@ -3,7 +3,7 @@ pipeline {
         label 'DevSecOps16-agent'
     }
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub_credentials')
+        DOCKERHUB_CREDENTIALS = credentials('4df43ffe-62a1-4f30-b144-f0d79dd199f7')
         DOCKER_IMAGE = 'your-dockerhub-username/your-repo-name'
     }
     stages {
@@ -11,7 +11,13 @@ pipeline {
             steps {
                 echo "pipeline works"
                 sh "ifconfig"
-                //sh 'docker --version'
+                sh 'docker --version'
+            }
+        }
+        stage('Check DockerHub Credentials') {
+            steps {
+                echo "DOCKERHUB_CREDENTIALS ID: ${DOCKERHUB_CREDENTIALS}" // Debug: Print credential ID
+                echo "DockerHub Username: ${DOCKERHUB_CREDENTIALS_USR}" // Verify username (environment-specific)
             }
         }
         // stage('Build Docker Image') {
