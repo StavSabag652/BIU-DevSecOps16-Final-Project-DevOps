@@ -1,0 +1,110 @@
+pipeline {
+    agent any
+    environment{
+        // Not yet final
+        REPO_DEVOPS='https://github.com/StavSabag652/BIU-DevSecOps16-Final-Project-DevOps'
+        REPO_APP=   'https://github.com/barabudy/BIU-DevSecOps16-Final-Project-Application'
+        APP_FRONT=  'frontend'
+        APP_BACK=   'backend'
+        BRANCH=     'main'
+    }
+    stages{
+        stage('Utilities Verfication'){
+            parallel{
+                stage("Verify AWS"){
+                    steps{
+                        sh 'aws --version'
+                    }
+                }
+                stage("Verify Docker"){
+                    steps{
+                        sh 'docker --version'
+                    }
+                }
+                stage("Verify Python"){
+                    steps{
+                        sh 'python3 --version'
+                    }
+                }
+                stage("Verify Flask"){
+                    steps{
+                        sh 'python3 --version'
+                    }
+                }
+            }
+        }
+        stage('test aws connectivity'){
+            steps{
+                withAWS(credentials:'jenkins'){
+                    // 1. What credentials and to what account should we connect Jenkins to?
+                    // 2. Create the necessary credentials in Jenkins
+                    // sh 'aws sts get-caller-identity'
+                    echo 'test aws connectivity'
+                }
+            }
+        }
+        stage('clone application'){
+            steps{
+                // Create a github user / use a git plugin for authentication
+                // sh 'git clone $REPO_APP'
+                echo 'git clone application'
+            }
+        }
+        stage('install requirements'){
+            steps {
+                // Install pip / other packages if necessary
+               // sh 'pip3 install flask --break-system-packages'
+               // sh 'apt install -r requirements.txt'
+               echo 'install requirements'
+            }
+        }
+        stage('build'){
+            steps{
+                // sh 'python3 $APP/app.py &'
+                echo 'build'
+            }
+
+        }
+        stage('test'){
+            // agent{ docker: "ubuntu" } // (Hodi recommends performing unit tests inside containers)
+            parallel{
+                stage('unit test'){
+                    steps{
+                        sh 'sleep 3'
+                        sh 'echo pass'
+                    }
+                }
+                stage('e2e test'){
+                    steps{
+                        sh 'sleep 4'
+                        sh 'echo pass'
+                    }
+                }
+
+            }
+        }
+        stage('build docker image'){
+            steps{
+                // sh 'docker build -t flasko:V$BUILD_NUMBER $APP'
+                echo 'build docker image'
+            }
+       }
+       stage('verify image creation'){
+            steps{
+                // sh 'docker images'
+                echo 'verify image creation'
+            }
+       }
+    }
+    post{
+        always{
+            // sh 'rm -fr $APP'
+            echo 'Pipeline finished'
+        }
+        success{
+            // Trigger another pipeline for CD
+            echo 'Pipeline successful'
+        }
+    }
+   
+}
