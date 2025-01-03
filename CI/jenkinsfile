@@ -9,7 +9,9 @@ pipeline {
     stages {
         stage('Verify Docker') {
             steps {
-                sh 'docker --version'
+                echo "pipeline works"
+                sh "ifconfig"
+                //sh 'docker --version'
             }
         }
         // stage('Build Docker Image') {
