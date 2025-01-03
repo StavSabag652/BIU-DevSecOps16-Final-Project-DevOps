@@ -9,15 +9,7 @@ pipeline {
     stages {
         stage('Verify Docker') {
             steps {
-                echo "pipeline works"
-                sh "ifconfig"
                 sh 'docker --version'
-            }
-        }
-        stage('Check DockerHub Credentials') {
-            steps {
-                echo "DOCKERHUB_CREDENTIALS ID: ${DOCKERHUB_CREDENTIALS}" // Debug: Print credential ID
-                echo "DockerHub Username: ${DOCKERHUB_CREDENTIALS_USR}" // Verify username (environment-specific)
             }
         }
         // stage('Build Docker Image') {
@@ -41,9 +33,7 @@ pipeline {
     }
     post {
         always {
-            echo "pipeline finished"
-            // Add Post cleanup stage here
-            //cleanWs()
+            cleanWs()
         }
     }
 }
