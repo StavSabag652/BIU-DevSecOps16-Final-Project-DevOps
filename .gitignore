@@ -1,3 +1,4 @@
-# Ignore all .key and .key.pub files
+# Ignore all .key, .key.pub *.ppk files
 *.key
 *.key.pub
+*.ppk
