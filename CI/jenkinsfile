@@ -16,15 +16,17 @@ pipeline {
         stage('Clone Application Repo') {
             steps {
                 dir('application') {
-                    git branch: 'main', url: "${APP_REPO}"
+                    git branch: 'dev', url: "${APP_REPO}"
                 }
             }
         }
         stage('Build Docker Image') {
             steps {
                 dir('application/backend') {
-                    echo "Build Docker Image"
-                    sh 'docker build -t $DOCKER_IMAGE:latest .'
+                    echo "Build Docker Image $DOCKER_IMAGE"
+                    sh "ls -lh"
+                    sh "pwd"
+                    //sh 'docker build -t $DOCKER_IMAGE:latest .'
                 }
             }
         }
