@@ -4,7 +4,8 @@ pipeline {
     }
     environment {
         DOCKERHUB_CREDENTIALS = credentials('4df43ffe-62a1-4f30-b144-f0d79dd199f7')
-        DOCKER_IMAGE = 'your-dockerhub-username/your-repo-name'
+        APP_REPO = 'https://github.com/barabudy/BIU-DevSecOps16-Final-Project-Application.git'
+        DOCKER_IMAGE = '/barabudy/smart-home-app/'
     }
     stages {
         stage('Verify Docker') {
@@ -12,28 +13,41 @@ pipeline {
                 sh 'docker --version'
             }
         }
-        // stage('Build Docker Image') {
-        //     steps {
-        //         sh 'docker build -t $DOCKER_IMAGE:latest .'
-        //     }
-        // }
-        // stage('Push to DockerHub') {
-        //     steps {
-        //         withDockerRegistry([credentialsId: 'dockerhub_credentials', url: '']) {
-        //             sh 'docker push $DOCKER_IMAGE:latest'
-        //         }
-        //     }
-        // }
-        // stage('Verify Pull') {
-        //     steps {
-        //         sh 'docker rmi $DOCKER_IMAGE:latest'
-        //         sh 'docker pull $DOCKER_IMAGE:latest'
-        //     }
-        // }
+        stage('Clone Application Repo') {
+            steps {
+                dir('application') {
+                    git branch: 'main', url: "${APP_REPO}"
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                dir('application/backend') {
+                    echo "Build Docker Image"
+                    sh 'docker build -t $DOCKER_IMAGE:latest .'
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                echo "Push Docker Image"
+                // withDockerRegistry([credentialsId: '4df43ffe-62a1-4f30-b144-f0d79dd199f7', url: '']) {
+                //     sh 'docker push $DOCKER_IMAGE:latest'
+                // }
+            }
+        }
+        stage('Verify Pull') {
+            steps {
+                echo "Verify Image upload"
+                // sh 'docker rmi $DOCKER_IMAGE:latest'
+                // sh 'docker pull $DOCKER_IMAGE:latest'
+            }
+        }
     }
     post {
         always {
             cleanWs()
+            echo "Pipeline completed and workspace cleaned."
         }
     }
 }
