@@ -16,8 +16,8 @@ spec:
         app: smart-home-backend
     spec:
       containers:
-      - name: nginx
-        image: nginx:latest
+      - name: backend
+        image: barabudy/smart-home-app:latest
         ports:
         - containerPort: 80
         resources:
@@ -27,8 +27,3 @@ spec:
           limits:
             memory: "256Mi" # Limit to 256 MiB of memory
             cpu: "500m"     # Limit to 500 millicores of CPU
-      # - name: flask-app
-      #   image: python:3.9-slim
-      #   command: ["python3", "--version"]
-      #   ports:
-      #   - containerPort: 5000
