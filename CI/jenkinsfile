@@ -5,7 +5,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('4df43ffe-62a1-4f30-b144-f0d79dd199f7')
         APP_REPO = 'https://github.com/barabudy/BIU-DevSecOps16-Final-Project-Application.git'
-        DOCKER_IMAGE = '/barabudy/smart-home-app/'
+        DOCKER_IMAGE = 'barabudy/smart-home-app'
     }
     stages {
         stage('Verify Docker') {
@@ -24,25 +24,23 @@ pipeline {
             steps {
                 dir('application/backend') {
                     echo "Build Docker Image $DOCKER_IMAGE"
-                    sh "ls -lh"
-                    sh "pwd"
-                    //sh 'docker build -t $DOCKER_IMAGE:latest .'
+                    sh 'docker build -t $DOCKER_IMAGE:latest .'
                 }
             }
         }
         stage('Push Docker Image') {
             steps {
                 echo "Push Docker Image"
-                // withDockerRegistry([credentialsId: '4df43ffe-62a1-4f30-b144-f0d79dd199f7', url: '']) {
-                //     sh 'docker push $DOCKER_IMAGE:latest'
-                // }
+                withDockerRegistry([credentialsId: '4df43ffe-62a1-4f30-b144-f0d79dd199f7', url: '']) {
+                    sh 'docker push $DOCKER_IMAGE:latest'
+                }
             }
         }
         stage('Verify Pull') {
             steps {
                 echo "Verify Image upload"
-                // sh 'docker rmi $DOCKER_IMAGE:latest'
-                // sh 'docker pull $DOCKER_IMAGE:latest'
+                sh 'docker rmi $DOCKER_IMAGE:latest'
+                sh 'docker pull $DOCKER_IMAGE:latest'
             }
         }
     }
