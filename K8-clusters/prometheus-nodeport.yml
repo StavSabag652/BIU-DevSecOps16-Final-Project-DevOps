@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: smart-home-prometheus-nodeport
+  namespace: smart-home-app  # Replace with your Prometheus namespace
+spec:
+  selector:
+    app: prometheus  # Replace with the label selector for your Prometheus pod
+  ports:
+    - protocol: TCP
+      port: 9090        # The port Prometheus listens on
+      targetPort: 9090   # The internal port of the Prometheus container
+      nodePort: 30003    # The external port exposed on each node (can be any port in 30000-32767)
+  type: NodePort

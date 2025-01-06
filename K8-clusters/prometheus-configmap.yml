@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s  # Scrape every 15 seconds
+
+    scrape_configs:
+      # Scrape the backend service
+      - job_name: 'smart-home-backend'
+        static_configs:
+          - targets: ['localhost:5001/metrics']
+
+
