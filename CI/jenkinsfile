@@ -16,7 +16,7 @@ pipeline {
         stage('Clone Application Repo') {
             steps {
                 dir('application') {
-                    git branch: 'dev', url: "${APP_REPO}"
+                    git branch: 'main', url: "${APP_REPO}"
                 }
             }
         }
