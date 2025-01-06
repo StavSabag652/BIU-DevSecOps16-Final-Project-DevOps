@@ -36,6 +36,15 @@ resource "aws_security_group" "smart-home-sg" {
   }
 
   ingress {
+    description = "Prometheus Access"
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
+  ingress {
     description = "NGINX Testing"
     from_port   = 80
     to_port     = 80
